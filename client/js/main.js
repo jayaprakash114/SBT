@@ -117,7 +117,7 @@
         }
     });
 
-    const apiUrl = 'https://sbt-api-backend.vercel.app'; // Make sure this is the correct API URL
+    const apiUrl = 'https://sbt-new-api-backend.vercel.app'; // Make sure this is the correct API URL
 
     // Function to render the products dynamically based on the category selected
     function renderProducts(products) {
