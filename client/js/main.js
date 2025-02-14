@@ -242,11 +242,11 @@ function renderProducts(products) {
                     <!-- New container for price and button to keep them together at the bottom -->
                     <div class="mt-auto">
                         <div class="text-center py-2">
-                            <span class="fw-bold" style="color:#a45430;">Rs.${product.price}</span>
+                            <span class="text-align fw-bold" style="color:#a45430;">Rs.${product.price}</span>
                         </div>
                         <div class="d-flex border-top">
                             <small class="w-100 text-center py-2">
-                                <button class="text-white w-100 btn btn-add-to-cart" data-product-id="${product.id}" style="background-color:#a45430;">
+                                <button class="text-white w-100 btn btn- add-to-cart-btn" data-product-id="${product.id}" style="background-color:#a45430;">
                                     <i class="fa fa-shopping-bag text-white me-2"></i>Add to cart
                                 </button>
                             </small>
