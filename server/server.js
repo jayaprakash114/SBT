@@ -20,14 +20,23 @@ cloudinary.config({
 });
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log('MongoDB connection error:', err));
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log('MongoDB connected successfully 🚀');
+    console.log(process.env.MONGO_URI,'URI 🚀');
+  })
+  .catch((err) => {
+    console.error('MongoDB connection error:', err);
+  });
+  
 
 // Define Category Schema and Model for MongoDB
 const categorySchema = new mongoose.Schema({
     name: String,
-    imageUrl: String
+    imageUrl: String,
 });
 
 const Category = mongoose.model('Category', categorySchema);
@@ -38,10 +47,12 @@ const productSchema = new mongoose.Schema({
     price: Number,
     category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
     imageUrl: String,
-    description: String // Add description field to the schema
+    description: String, // Add description field to the schema
+    soldOut: String
 });
 
 const Product = mongoose.model('Product', productSchema);
+
 
 // Multer setup for file upload
 const storage = multer.memoryStorage();
@@ -67,7 +78,7 @@ app.post('/addCategories', upload.single('image'), async (req, res) => {
             // Save category in MongoDB
             const newCategory = new Category({
                 name: categoryName,
-                imageUrl: imageUrl
+                imageUrl: imageUrl,
             });
 
             await newCategory.save();
@@ -158,9 +169,10 @@ app.delete('/deleteCategory/:id', async (req, res) => {
     }
 });
 
+
 // Route to add a new product
 app.post('/addProduct', upload.single('image'), async (req, res) => {
-    const { name, price, category, description } = req.body;  // Add description from request body
+    const { name, price, category, description, soldOut } = req.body;  // Add description from request body
     const file = req.file;  // File uploaded via multer
 
     try {
@@ -181,7 +193,8 @@ app.post('/addProduct', upload.single('image'), async (req, res) => {
                 price,
                 category,
                 description,  // Add description to product data
-                imageUrl
+                imageUrl,
+                soldOut
             });
 
             // Save the product in the database
@@ -211,7 +224,8 @@ app.put('/updateProduct/:id', upload.single('image'), async (req, res) => {
             name: req.body.name || existingProduct.name,             // Use existing value if not provided
             price: req.body.price || existingProduct.price,          // Use existing value if not provided
             category: req.body.category || existingProduct.category, // Use existing value if not provided
-            description: req.body.description || existingProduct.description // Use existing value if not provided
+            description: req.body.description || existingProduct.description, // Use existing value if not provided
+            soldOut: req.body.soldOut || existingProduct.soldOut // Use existing value if not provided
         };
 
         if (req.file) {
